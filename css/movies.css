@@ -28,5 +28,5 @@ textarea { border: 2px solid #1E3755; padding: 0 2px; width: 216px; }
 #username.approved, #password1.approved, #password2.approved { background-position: 202px -35px; }
 #username.denied, #password1.denied, #password2.denied { background-color: #FF8282; background-position: 202px -52px; }
 
-#coverBar { height: 115px; left: 182px; overflow: hidden; position: absolute; top: 515px; width: 440px; }
+#coverBar {height: 115px;left: 182px;overflow: hidden;position: absolute;top: 489px;width: 440px;}
 #coverBar img { position: absolute; top: 0; }
