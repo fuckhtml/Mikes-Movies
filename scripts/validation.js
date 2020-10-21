@@ -66,7 +66,7 @@ const initPage = () => {
         setSubmitDisability();
       });
 
-      request.open('GET', `checkPass.php/password=${inputPassword1.value}`);
+      request.open('GET', `checkPass.php?password=${inputPassword1.value}`);
       request.send();
     } else {
       inputPassword1.className = 'denied';
