@@ -15,7 +15,9 @@ const initPage = () => {
     registerInput.disabled = true;
 
     if (inputUsername.value != '') {
-      let request = new XMLHttpRequest();
+      const request = new XMLHttpRequest();
+      const url = 'checkName.php';
+      const body = `username=${inputUsername.value}`;
 
       request.addEventListener('readystatechange', function() {
         inputUsername.className = 'thinking';
@@ -34,8 +36,9 @@ const initPage = () => {
         setSubmitDisability();
       });
 
-      request.open('GET', `checkName.php?username=${inputUsername.value}`);
-      request.send(); 
+      request.open('POST', url , true);
+      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      request.send(body);
     } else {
       inputUsername.className = 'denied';
       inputUsername.focus();
@@ -48,7 +51,9 @@ const initPage = () => {
     isPasswordValid = false;
 
     if (inputPassword1.value === inputPassword2.value) {
-      let request = new XMLHttpRequest();
+      const request = new XMLHttpRequest();
+      const url = 'checkPass.php';
+      const body = `password=${inputPassword1.value}`;
 
       request.addEventListener('readystatechange', function() {
         inputPassword1.className = 'thinking';
@@ -67,8 +72,9 @@ const initPage = () => {
         setSubmitDisability();
       });
 
-      request.open('GET', `checkPass.php?password=${inputPassword1.value}`);
-      request.send();
+      request.open('POST', url, true);
+      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      request.send(body);
     } else {
       inputPassword1.className = 'denied';
       inputPassword1.focus();
@@ -93,19 +99,20 @@ const initPage = () => {
 
   const registerUser = () => {
     registerInput.value = 'Processing...';
-    let animation = setInterval(scrollImages, 50);
+    const animation = setInterval(scrollImages, 50);
 
-    let url = 'register.php?' + 
-      'username=' + document.querySelector('#username').value + '&' + 
-      'password=' + document.querySelector('#password1').value + '&' + 
-      'firstname' + document.querySelector('#firstname').value + '&' + 
-      'lastname' + document.querySelector('#lastname').value + '&' + 
-      'email' + document.querySelector('#email').value + '&' + 
-      'genre' + document.querySelector('#genre').value + '&' + 
-      'movie'+ document.querySelector('#favorite').value + '&' + 
-      'description' + document.querySelector('#tastes').value;
+    const request = new XMLHttpRequest();
+    const url = 'register.php';
+    const body = ``+
+      `username=${document.querySelector('#username').value}&`+
+      `password=${document.querySelector('#password1').value}&`+
+      `firstname=${document.querySelector('#firstname').value}&`+
+      `lastname=${document.querySelector('#lastname').value}&`+
+      `email=${document.querySelector('#email').value}&`+
+      `genre=${document.querySelector('#genre').value}&`+
+      `movie=${document.querySelector('#favorite').value}&`+
+      `description=${document.querySelector('#tastes').value}&`;
 
-    let request = new XMLHttpRequest();
     request.addEventListener('readystatechange', function() {
       if (request.readyState === 4 && request.status === 200) {
         clearTimeout(animation);
@@ -113,8 +120,9 @@ const initPage = () => {
       }
     });
 
-    request.open('GET', url);
-    request.send();
+    request.open('POST', url, true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    request.send(body);
   }
 
   let isUsernameValid = false;
