@@ -4,27 +4,28 @@ const initPage = () => {
 
   const setSubmitDisability = () => {
     if (isUsernameValid && isPasswordValid) {
-      registerInput.disabled = false;
+      document.querySelector('#register').disabled = false;
     } else {
-      registerInput.disabled = true;
+      document.querySelector('#register').disabled = true;
     }    
   }
 
   const checkUsername = () => {
+    isUsernameValid = false;
+    registerInput.disabled = true;
+
     if (inputUsername.value != '') {
       let request = new XMLHttpRequest();
 
       request.addEventListener('readystatechange', function() {
         inputUsername.className = 'thinking';
-        registerInput.disabled = true;
 
         if (request.status === 200 && request.readyState === 4) {
           if (request.responseText === 'okay') {
             inputUsername.className = 'approved';
-            isPasswordValid = true;
+            isUsernameValid = true;
           } else {
             inputUsername.className = 'denied';
-            isUsernameValid = false;
             inputUsername.focus();
             inputUsername.select();
           }
@@ -37,19 +38,20 @@ const initPage = () => {
       request.send(); 
     } else {
       inputUsername.className = 'denied';
-      inputUsername = false;
       inputUsername.focus();
       inputUsername.select();
     }
   }
 
   const checkPassword = () => {
+    registerInput.disabled = true;
+    isPasswordValid = false;
+
     if (inputPassword1.value === inputPassword2.value) {
       let request = new XMLHttpRequest();
 
       request.addEventListener('readystatechange', function() {
         inputPassword1.className = 'thinking';
-        registerInput.disabled = true;
 
         if (request.status === 200 && request.readyState === 4) {
           if (request.responseText === 'okay') {
@@ -57,7 +59,6 @@ const initPage = () => {
             isPasswordValid = true;
           } else {
             inputPassword1.className = 'denied';
-            isPasswordValid = false;
             inputPassword1.focus();
             inputPassword1.select();
           }
@@ -70,7 +71,6 @@ const initPage = () => {
       request.send();
     } else {
       inputPassword1.className = 'denied';
-      isPasswordValid = false;
       inputPassword1.focus();
       inputPassword1.select();
     }
@@ -107,19 +107,19 @@ const initPage = () => {
 
     let request = new XMLHttpRequest();
     request.addEventListener('readystatechange', function() {
-      console.log(request.readyState);
       if (request.readyState === 4 && request.status === 200) {
-        console.log('clearing timeout...');
         clearTimeout(animation);
-        console.log('updating screen...');
         document.querySelector('#wrapper').innerHTML = request.responseText;
       }
     });
 
     request.open('GET', url);
     request.send();
-
   }
+
+  let isUsernameValid = false;
+  let isPasswordValid = false;
+  setSubmitDisability();
 
   const inputUsername = document.querySelector('#username');
   inputUsername.addEventListener('blur', checkUsername);
@@ -128,12 +128,8 @@ const initPage = () => {
   const inputPassword2 = document.querySelector('#password2');
   inputPassword2.addEventListener('blur', checkPassword);
 
-  let isUsernameValid = false;
-  let isPasswordValid = false;
-
   const registerInput = document.querySelector('#register');
   registerInput.addEventListener('click', registerUser);
-
 }
 
 window.addEventListener('load', initPage);
